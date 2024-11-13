@@ -55,11 +55,11 @@ Contributions are welcome! Here’s how to help with the development:
 This addon has been self made inspired by existing addons such as bigwigs lootres and a few others designed for turtle wow.
 
 To report a bug, suggest an improvement, or get help, please use the Issues section on GitHub.
-License
+
+### License
 
 This project is licensed under the MIT License. See the LICENSE file for more details.
 
-Support and Feedback
 
 ### TODO list
 
@@ -74,3 +74,8 @@ Support and Feedback
 - [ ] Put attributed strategy for RDPS
 - [ ] Display a widow at the start of the fight the show a text of where the player is expected to be according to attributed strategy
 - [ ] Add a map that could track player position according to current situation or at least just pin point where/ what he should be doing
+
+
+
+Support and Feedback
+Thank you !
