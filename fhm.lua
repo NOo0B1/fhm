@@ -72,18 +72,20 @@ end
 function SelectedStrat6Tanks()
     getglobal('fhmConfigFrameStrat'):Hide()
     is6TanksStrat=true
+    lrprint("You selected 6 tank strat.")
     getglobal('fhmConfigFrameRole'):Show()
 end
 
 function SelectedStrat8Tanks()
     getglobal('fhmConfigFrameStrat'):Hide()
     is6TanksStrat=false
+    lrprint("You selected 8 tank strat.")
     getglobal('fhmConfigFrameRole'):Show()
 end
 
 function toAttributedNumber()
     --todo name of the global to set text
-    getglobal('LootResLoadFromTextTextBox'):SetText("")
+    getglobal('fhmConfigFrameAttributedNumberTextBox'):SetText("")
     getglobal('fhmConfigFrameAttributedNumber'):Show()
 end
 
@@ -93,6 +95,7 @@ function SelectedRoleTank()
     isHeal=false
     isDPS=false
     isExtra=false
+    lrprint("You selected the role : TANK.")
     toAttributedNumber()
 end
 
@@ -102,6 +105,7 @@ function SelectedRoleHeal()
     isHeal=true
     isDPS=false
     isExtra=false
+    lrprint("You selected the role : HEAL.")
     toAttributedNumber()
 end
 
@@ -111,32 +115,33 @@ function SelectedRoleDPS()
     isHeal=false
     isDPS=true
     isExtra=false
+    lrprint("You selected the role : DPS.")
     getglobal('fhmConfigFrameRoleDPS'):Show()
 end
 
 function SelectedRoleRangedDPS()
     getglobal('fhmConfigFrameRoleDPS'):Hide()
     isRangedDPS = true
+    lrprint("You selected the role : ranged DPS.")
     toAttributedNumber()
 end
 
 function SelectedRoleMeleeDPS()
     getglobal('fhmConfigFrameRoleDPS'):Hide()
     isRangedDPS = false
+    lrprint("You selected the role : melee DPS.")
     toAttributedNumber()
 end
 
 function SelectedAttributedNumber()
     getglobal('fhmConfigFrameAttributedNumber'):Hide()
-    --isNumber
-    --getglobal('fhmConfigFrameAttributedNumber'):Show()
+    isNumber = getglobal('fhmConfigFrameAttributedNumberTextBox'):GetText()
+    lrprint("You selected the attributed role number : " .. isNumber)
 end
 
 ---------------
 -- EXECUTION --
 ---------------
--- /fhm help
--- /fhm help
 SLASH_FHM1 = "/fhm"
 SlashCmdList["FHM"] = function(cmd)
     if cmd then

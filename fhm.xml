@@ -13,7 +13,7 @@
         <Frames>
             <Button name="$parentLoadText" hidden="false" inherits="UIPanelButtonTemplate" text="6 TANKS STRAT">
                 <Size>
-                    <AbsDimension x="80" y="21"/>
+                    <AbsDimension x="120" y="21"/>
                 </Size>
                 <Color r="1" g="0" b="1" a="0.5"/>
                 <Anchors>
@@ -34,7 +34,7 @@
 
             <Button name="$parentLoadText" hidden="false" inherits="UIPanelButtonTemplate" text="8 TANKS REGULAR STRAT">
                 <Size>
-                    <AbsDimension x="80" y="21"/>
+                    <AbsDimension x="200" y="21"/>
                 </Size>
                 <Color r="1" g="0" b="1" a="0.5"/>
                 <Anchors>
@@ -187,9 +187,9 @@
                 </Size>
                 <Color r="1" g="0" b="1" a="0.5"/>
                 <Anchors>
-                    <Anchor point="TOPRIGHT">
+                    <Anchor point="TOPLEFT">
                         <Offset>
-                            <AbsDimension x="-5" y="-7"/>
+                            <AbsDimension x="3" y="-7"/>
                         </Offset>
                     </Anchor>
                 </Anchors>
@@ -264,7 +264,7 @@
                 </Anchors>
                 <Scripts>
                     <OnClick>
-                        SelectedRoleTank()
+                        SelectedAttributedNumber()
                     </OnClick>
 
                 </Scripts>
