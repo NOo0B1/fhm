@@ -1,0 +1,157 @@
+---------------
+-- CONSTANTS --
+---------------
+local fhm = CreateFrame("Frame", "fhm", GameTooltip)
+
+fhm:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
+fhm:RegisterEvent("CHAT_MSG_WHISPER")
+fhm:RegisterEvent("CHAT_MSG_SYSTEM")
+fhm:RegisterEvent("ADDON_LOADED")
+fhm:RegisterEvent("CHAT_MSG_LOOT")
+fhm.Player = ''
+fhm.Item = ''
+fhm.Name = ''
+---------------
+-- VARIABLES --
+---------------
+
+local raids = 'Naxxramas'
+
+local is6TanksStrat=false
+
+local isTank=false
+local isHeal=false
+local isDPS=false
+local isExtra=false
+
+local isRangedDPS=false
+
+local isNumber=0
+
+---------------
+-- FUNCTIONS --
+---------------
+function lrprint(a)
+    if a == nil then
+        DEFAULT_CHAT_FRAME:AddMessage('|cff69ccf0[LR]|cff0070de:' .. time() .. '|cffffffff attempt to print a nil value.')
+        return false
+    end
+    DEFAULT_CHAT_FRAME:AddMessage("|cff69ccf0[LR] |cffffffff" .. a)
+end
+
+fhm:SetScript("OnEvent", function()
+    -- if event == 'ADDON_LOADED' then
+    --     lrprint("fhm is loaded successfully.")
+    -- end
+end)
+
+
+
+function fhm:PrintHelp()
+
+    lrprint("This is the help message for the addon fhm from Cromsson.")
+    -- lrprint(" _______ _             __                   _    _                                                _   ")
+    -- lrprint("|__   __| |           / _|                 | |  | |                                              | |  ")
+    -- lrprint("   | |  | |__   ___  | |_ ___  _   _ _ __  | |__| | ___  _   _ _ __ ___  ___ _ __ ___   ___ _ __ | |_ ")
+    -- lrprint("   | |  | '_ \\ / _ \\ |  _/ _ \\| | | | '__| |  __  |/ _ \\| | | | '__/ __|/ _ \\ '_ ` _ \\ / _ \\ '_ \\| __|")
+    -- lrprint("   | |  | | | |  __/ | || (_) | |_| | |    | |  | | (_) | |_| | |  \\__ \\  __/ | | | | |  __/ | | | |_ ")
+    -- lrprint("   |_|  |_| |_|\\___| |_| \\___/ \\__,_|_|    |_|  |_|\\___/ \\__,_|_|  |___/\\___|_| |_| |_|\\___|_| |_|\\__|")
+    -- lrprint("                                                                                                      ")
+    lrprint("Type /fhm help or /fhm h to display this function")
+    lrprint("Type /fhm disable to disable this addon.")
+    lrprint("Type /fhm enable to activate this addon.")
+    lrprint("Type /fhm config to configure this addon.")
+end
+
+function fhm:Configure()
+    --getglobal('LootResLoadFromTextTextBox'):SetText("")
+    getglobal('fhmConfigFrameStrat'):Show()
+end
+
+
+function SelectedStrat6Tanks()
+    getglobal('fhmConfigFrameStrat'):Hide()
+    is6TanksStrat=true
+    getglobal('fhmConfigFrameRole'):Show()
+end
+
+function SelectedStrat8Tanks()
+    getglobal('fhmConfigFrameStrat'):Hide()
+    is6TanksStrat=false
+    getglobal('fhmConfigFrameRole'):Show()
+end
+
+function toAttributedNumber()
+    --todo name of the global to set text
+    getglobal('LootResLoadFromTextTextBox'):SetText("")
+    getglobal('fhmConfigFrameAttributedNumber'):Show()
+end
+
+function SelectedRoleTank()
+    getglobal('fhmConfigFrameRole'):Hide()
+    isTank=true
+    isHeal=false
+    isDPS=false
+    isExtra=false
+    toAttributedNumber()
+end
+
+function SelectedRoleHeal()
+    getglobal('fhmConfigFrameRole'):Hide()
+    isTank=false
+    isHeal=true
+    isDPS=false
+    isExtra=false
+    toAttributedNumber()
+end
+
+function SelectedRoleDPS()
+    getglobal('fhmConfigFrameRole'):Hide()
+    isTank=false
+    isHeal=false
+    isDPS=true
+    isExtra=false
+    getglobal('fhmConfigFrameRoleDPS'):Show()
+end
+
+function SelectedRoleRangedDPS()
+    getglobal('fhmConfigFrameRoleDPS'):Hide()
+    isRangedDPS = true
+    toAttributedNumber()
+end
+
+function SelectedRoleMeleeDPS()
+    getglobal('fhmConfigFrameRoleDPS'):Hide()
+    isRangedDPS = false
+    toAttributedNumber()
+end
+
+function SelectedAttributedNumber()
+    getglobal('fhmConfigFrameAttributedNumber'):Hide()
+    --isNumber
+    --getglobal('fhmConfigFrameAttributedNumber'):Show()
+end
+
+---------------
+-- EXECUTION --
+---------------
+-- /fhm help
+-- /fhm help
+SLASH_FHM1 = "/fhm"
+SlashCmdList["FHM"] = function(cmd)
+    if cmd then
+        if cmd == 'help' or 'h' then
+            fhm:PrintHelp()
+        end
+        if cmd == 'enable' then
+            --LootRes:PrintReserves()
+        end
+        if cmd == 'disable' then
+            --LootRes:PrintReserves()
+        end
+        if cmd == 'config' then
+            fhm:Configure()
+        end
+
+    end
+end
