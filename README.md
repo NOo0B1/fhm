@@ -13,6 +13,10 @@ Method 1: Github Addon manager
     Add a new addon
     Paste the git url
     Click “Install”
+    you can see more at https://turtle-wow.fandom.com/wiki/Addons
+    in the following section:
+    How to Install Addons
+
 
 Method 2: Manual
 
