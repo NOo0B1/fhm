@@ -71,7 +71,8 @@ This project is licensed under the MIT License. See the LICENSE file for more de
 - [x] Create addon
 - [x] Put addon on github
 - [x] Make the definition of the player role
-- [ ] Put a listener to catch four horsemen starting fight
+- [x] Put a listener to catch four horsemen starting fight
+- [x] better UI/UX
 - [ ] Put attributed strategy for tanks
 - [ ] Put attributed strategy for healers
 - [ ] Put attributed strategy for MDPS
