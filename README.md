@@ -1,7 +1,8 @@
 # FHM
 
 FHM is an addon for World of Warcraft designed to assit players on the four horsemen boss in naxxramas. This addon is compatible with Wow 1.12 (vanilla and vanilla+).
-Features
+
+### Features
 
     Feature 1: Select the strat applied by your guild , your role and attribution
     Feature 2: Display during the fight where you should be.
