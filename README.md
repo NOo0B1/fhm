@@ -35,6 +35,7 @@ Once installed and enabled, FHM should function automatically. Here are some use
     /fhm enable : disable the functionnalities of the addon.
     /fhm disable : enable the functionnalities of the addon.
 
+The M means movable and U means unmovable on the top right button of the frame.
 ### Configuration
 
 The addon includes a configuration interface accessible via the options menu (or the /youraddon command). Here, you can customize settings such as:
