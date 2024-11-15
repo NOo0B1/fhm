@@ -184,7 +184,7 @@ end
 
 
 -- Function to reset all frames to their initial positions
-local function ResetFramesToInitialPosition()
+function ResetFramesToInitialPosition()
     for _, frameInfo in ipairs(customFrames) do
         local frame = frameInfo.frame
         local initialPoint = frameInfo.initialPoint
@@ -193,7 +193,13 @@ local function ResetFramesToInitialPosition()
     end
 end
 
-
+-- Function to add an image texture to a frame
+function AddImageToFrame(frame, texturePath)
+    local texture = frame:CreateTexture(nil, "BACKGROUND")
+    texture:SetAllPoints(frame)
+    texture:SetTexture(texturePath)
+    return texture
+end
 
 -------------------
 -- PRE EXECUTION --
@@ -204,7 +210,12 @@ local frameConfigs = {
     { name = "stratFrame", title = "Choose Your Strat", width = 300, height = 250 },
     { name = "roleFrame", title = "Choose Your Role", width = 300, height = 250 },
     { name = "numberInputFrame", title = nil, width = 300, height = 250 },
-    { name = "imageFrame", title = "", width = 256, height = 256 },
+    { name = "imageFrameInit", title = "", width = 256, height = 256 },
+    { name = "imageFrameBlaumeux", title = "", width = 256, height = 256 },
+    { name = "imageFrameMograine", title = "", width = 256, height = 256 },
+    { name = "imageFrameSafe", title = "", width = 256, height = 256 },
+    { name = "imageFrameThane", title = "", width = 256, height = 256 },
+    { name = "imageFrameZeliek", title = "", width = 256, height = 256 },
 }
 
 -- Function to create and store each frame with initial position
@@ -222,10 +233,42 @@ for _, config in ipairs(frameConfigs) do
     })
 end
 
+--todo factorisation
+
 -- Add the image to the image frame (example for setting up a texture)
-local imageTexture = imageFrame:CreateTexture(nil, "BACKGROUND")
-imageTexture:SetAllPoints(imageFrame)
-imageTexture:SetTexture("Interface\\AddOns\\fhm\\fhpositions_256x256_32bit_alpha.tga")
+local imageTextureInit = imageFrameInit:CreateTexture(nil, "BACKGROUND")
+imageTextureInit:SetAllPoints(imageFrameInit)
+imageTextureInit:SetTexture("Interface\\AddOns\\fhm\\fhpositions_256x256_32bit_alpha_Init.tga")
+
+-- Add the image to the image frame (example for setting up a texture)
+local imageTextureBlaumeux = imageFrameBlaumeux:CreateTexture(nil, "BACKGROUND")
+imageTextureBlaumeux:SetAllPoints(imageFrameBlaumeux)
+imageTextureBlaumeux:SetTexture("Interface\\AddOns\\fhm\\fhpositions_256x256_32bit_alpha_Blaumeux.tga")
+
+-- Add the image to the image frame (example for setting up a texture)
+local imageTextureMograine = imageFrameMograine:CreateTexture(nil, "BACKGROUND")
+imageTextureMograine:SetAllPoints(imageFrameMograine)
+imageTextureMograine:SetTexture("Interface\\AddOns\\fhm\\fhpositions_256x256_32bit_alpha_Mograine.tga")
+
+-- Add the image to the image frame (example for setting up a texture)
+local imageTextureSafe = imageFrameSafe:CreateTexture(nil, "BACKGROUND")
+imageTextureSafe:SetAllPoints(imageFrameSafe)
+imageTextureSafe:SetTexture("Interface\\AddOns\\fhm\\fhpositions_256x256_32bit_alpha_Safe.tga")
+
+-- Add the image to the image frame (example for setting up a texture)
+local imageTextureThane = imageFrameThane:CreateTexture(nil, "BACKGROUND")
+imageTextureThane:SetAllPoints(imageFrameThane)
+imageTextureThane:SetTexture("Interface\\AddOns\\fhm\\fhpositions_256x256_32bit_alpha_Thane.tga")
+
+-- Add the image to the image frame (example for setting up a texture)
+local imageTextureZeliek = imageFrameZeliek:CreateTexture(nil, "BACKGROUND")
+imageTextureZeliek:SetAllPoints(imageFrameZeliek)
+imageTextureZeliek:SetTexture("Interface\\AddOns\\fhm\\fhpositions_256x256_32bit_alpha_Zeliek.tga")
+
+
+
+
+
 
 -- Title for the number input frame
 local numberInputTitle = numberInputFrame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
@@ -333,75 +376,16 @@ end)
 stratFrame:Hide()
 roleFrame:Hide()
 numberInputFrame:Hide()
-imageFrame:Hide()
+imageFrameInit:Hide()
+imageFrameBlaumeux:Hide()
+imageFrameSafe:Hide()
+imageFrameMograine:Hide()
+imageFrameThane:Hide()
+imageFrameZeliek:Hide()
 
 ---
 --test section
--- Create the main frame
-local myFrame = CreateFrame("Frame", "MyMovableFrame", UIParent)
-myFrame:SetWidth(200)      -- Set the width of the frame
-myFrame:SetHeight(100)     -- Set the height of the frame
-myFrame:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
-myFrame:SetBackdrop({
-    bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
-    edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border",
-    tile = true,
-    tileSize = 32,
-    edgeSize = 32,
-    insets = { left = 8, right = 8, top = 8, bottom = 8 }
-})
 
--- Enable mouse input
-myFrame:EnableMouse(true)
-
--- Initially set the frame to be non-movable
-myFrame:SetMovable(false)
-
--- Create a small button in the top-right corner of the frame
-local toggleButton = CreateFrame("Button", "ToggleMovableButton", myFrame, "UIPanelButtonTemplate")
-toggleButton:SetWidth(20)     -- Small width
-toggleButton:SetHeight(20)    -- Small height
-toggleButton:SetPoint("TOPRIGHT", myFrame, "TOPRIGHT", -5, -5) -- Position at top-right corner
-
--- Function to update button color and frame movability
-local function UpdateButtonAndFrameState()
-    if myFrame:IsMovable() then
-        toggleButton:SetBackdropColor(0, 1, 0, 1) -- Green for movable
-        toggleButton:SetText("M")
-        myFrame:RegisterForDrag("LeftButton")      -- Enable dragging when movable
-    else
-        toggleButton:SetBackdropColor(1, 0, 0, 1) -- Red for unmovable
-        toggleButton:SetText("U")
-        myFrame:RegisterForDrag()                  -- Disable dragging
-    end
-end
-
--- Set up button click event to toggle movability
-toggleButton:SetScript("OnClick", function()
-    if myFrame:IsMovable() then
-        myFrame:SetMovable(false)     -- Make the frame unmovable
-    else
-        myFrame:SetMovable(true)      -- Make the frame movable
-    end
-    UpdateButtonAndFrameState()       -- Update the button color and drag registration
-end)
-
--- Set up frame dragging scripts
-myFrame:SetScript("OnDragStart", function()
-    if myFrame:IsMovable() then
-        myFrame:StartMoving()
-    end
-end)
-
-myFrame:SetScript("OnDragStop", function()
-    myFrame:StopMovingOrSizing()
-end)
-
--- Initial update of the button state
-UpdateButtonAndFrameState()
-
-
-myFrame:Hide()
 
 ---------------
 -- EXECUTION --
@@ -420,8 +404,10 @@ SlashCmdList["FHM"] = function(cmd)
             ResetFramesToInitialPosition()
             lrprint("Frames reset to their initial positions.")
         elseif cmd == 'test' then
-            imageFrame:Show()
+            imageFrameInit:Show()
             --myFrame:Show()
+        elseif cmd == 'testThane' then
+            imageFrameThane:Show()
         elseif cmd == 'config' or cmd == '' then
             stratFrame:Show()
         else
