@@ -76,13 +76,13 @@ This project is licensed under the MIT License. See the LICENSE file for more de
 - [x] Make the definition of the player role
 - [x] Put a listener to catch four horsemen starting fight
 - [x] better UI/UX
-- [ ] Put attributed strategy for tanks
+- [x] Put attributed strategy for tanks
 - [ ] Put attributed strategy for healers
 - [ ] Put attributed strategy for MDPS
 - [ ] Put attributed strategy for RDPS
 - [x] Display a widow at the start of the fight the show a text of where the player is expected to be according to attributed strategy
 - [ ] Add a map that could track player position according to current situation or at least just pin point where/ what he should be doing
-
+- [ ] add a way to close the window
 
 
 Enjoy and happy gaming!
