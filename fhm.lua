@@ -28,6 +28,18 @@ local bossSpells = {
     ["Lady Blaumeux"] = 28833,    -- Example spell ID for Shadow Bolt
     ["Sir Zeliek"] = 28835        -- Example spell ID for Holy Wrath
 }
+
+-- Define the 2D array with additional columns "6 TANKS" and "TANK" at the start of each row
+local marksTable = {
+    { "6 TANKS", "TANK", 1, "Thane ->", "Thane ->", "Safespot->", "Zeliek->", "Zeliek->", "Run to Blaumeux->", "Blaumeux->", "Blaumeux->", "Run to Safe Spot->", "Safespot->", "Safespot->", "Run to Mograine->", "Mograine->" },
+    { "6 TANKS", "TANK", 2, "Mograine->", "Rune to Zeliek->", "Zeliek->", "Zeliek->", "Run to Blaumeux->", "Blaumeux->", "Blaumeux->", "Run to Safe Spot->", "Safespot->", "Safespot->", "Run to Mograine->", "Mograine->", "Mograine->" },
+    { "6 TANKS", "TANK", 3, "Zeliek->", "Zeliek->", "Run to Blaumeux->", "Blaumeux->", "Blaumeux->", "Run to Safe Spot->", "Safespot->", "Safespot->", "Run to Mograine->", "Mograine->", "Mograine->", "Run to Zeliek->", "Zeliek->" },
+    { "6 TANKS", "TANK", 4, "Blaumeux->", "Run to Mograine->", "Mograine->", "Mograine->", "Run to Zeliek->", "Zeliek->", "Zeliek->", "Run to Blaumeux->", "Blaumeux->", "Blaumeux->", "Run to Safe Spot->", "Safespot->", "Safespot->" },
+    { "6 TANKS", "TANK", 5, "Safespot->", "Mograine->", "Mograine->", "Run to Zeliek->", "Zeliek->", "Zeliek->", "Run to Blaumeux->", "Blaumeux->", "Blaumeux->", "Run to Safe Spot->", "Safespot->", "Safespot->", "Run to Mograine->" },
+    { "6 TANKS", "TANK", 6, "Safespot->", "Blaumeux->", "Blaumeux->", "Run to Safe Spot->", "Safespot->", "Safespot->", "Run to Mograine->", "Mograine->", "Mograine->", "Rune to Zeliek->", "Zeliek->", "Zeliek->", "Run to Blaumeux->" }
+}
+
+
 ---------------
 -- FUNCTIONS --
 ---------------
@@ -381,8 +393,13 @@ SlashCmdList["FHM"] = function(cmd)
         elseif cmd == 'reset' then
             ResetFramesToInitialPosition()
             lrprint("Frames reset to their initial positions.")
+            isEncounterStarted=false;
         elseif cmd == 'test' then
-            imageFrameInit:Show()
+            selectedRole="TANK"
+            selectedStrat="6 TANKS"
+            number=1
+            StartEncounter()
+            --imageFrameInit:Show()
             --myFrame:Show()
         elseif cmd == 'testThane' then
             imageFrameThane:Show()
@@ -413,4 +430,25 @@ fhm:SetScript("OnEvent", function(self, event, ...)
     end
 end)
 
+-- Function to print a log message
+local function printLog()
+    DEFAULT_CHAT_FRAME:AddMessage("Log printed every 15 seconds!")
+end
 
+
+-- Initialize the start time
+local lastTime = GetTime()
+
+-- Timer function to call the printLog function every 15 seconds
+local elapsed = 0  -- Initialize elapsed time
+
+-- Timer function to call the printLog function every 15 seconds
+fhm:SetScript("OnUpdate", function(self)
+    if isEncounterStarted then
+        local currentTime = GetTime()  -- Get the current game time
+        if currentTime - lastTime >= 15 then  -- Check if 15 seconds have passed
+            printLog()  -- Call the function to print the log message
+            lastTime = currentTime  -- Update lastTime to the current time
+        end
+    end
+end)
