@@ -430,25 +430,33 @@ fhm:SetScript("OnEvent", function(self, event, ...)
     end
 end)
 
--- Function to print a log message
-local function printLog()
+-- Function to print a log message for the 1-second timer
+local function printLog1Sec()
+    DEFAULT_CHAT_FRAME:AddMessage("Log printed every 1 second!")
+end
+
+-- Function to print a log message for the 15-second timer
+local function printLog15Sec()
     DEFAULT_CHAT_FRAME:AddMessage("Log printed every 15 seconds!")
 end
 
+-- Initialize the start times
+local lastTime1Sec = GetTime()  -- For 1-second timer
+local lastTime15Sec = GetTime()  -- For 15-second timer
 
--- Initialize the start time
-local lastTime = GetTime()
-
--- Timer function to call the printLog function every 15 seconds
-local elapsed = 0  -- Initialize elapsed time
-
--- Timer function to call the printLog function every 15 seconds
+-- Timer function to call the log functions every 1 and 15 seconds
 fhm:SetScript("OnUpdate", function(self)
-    if isEncounterStarted then
-        local currentTime = GetTime()  -- Get the current game time
-        if currentTime - lastTime >= 15 then  -- Check if 15 seconds have passed
-            printLog()  -- Call the function to print the log message
-            lastTime = currentTime  -- Update lastTime to the current time
-        end
+    local currentTime = GetTime()  -- Get the current game time
+
+    -- Check if 1 second has passed
+    if currentTime - lastTime1Sec >= 1 then
+        printLog1Sec()  -- Call the function to print the 1-second log message
+        lastTime1Sec = currentTime  -- Update lastTime1Sec to the current time
+    end
+
+    -- Check if 15 seconds have passed
+    if currentTime - lastTime15Sec >= 15 then
+        printLog15Sec()  -- Call the function to print the 15-second log message
+        lastTime15Sec = currentTime  -- Update lastTime15Sec to the current time
     end
 end)
