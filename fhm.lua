@@ -233,42 +233,20 @@ for _, config in ipairs(frameConfigs) do
     })
 end
 
---todo factorisation
+-- Add textures to frames using the function
+local imageTextures = {
+    { frame = imageFrameInit, texturePath = "Interface\\AddOns\\fhm\\fhpositions_256x256_32bit_alpha_Init.tga" },
+    { frame = imageFrameBlaumeux, texturePath = "Interface\\AddOns\\fhm\\fhpositions_256x256_32bit_alpha_Blaumeux.tga" },
+    { frame = imageFrameMograine, texturePath = "Interface\\AddOns\\fhm\\fhpositions_256x256_32bit_alpha_Mograine.tga" },
+    { frame = imageFrameSafe, texturePath = "Interface\\AddOns\\fhm\\fhpositions_256x256_32bit_alpha_Safe.tga" },
+    { frame = imageFrameThane, texturePath = "Interface\\AddOns\\fhm\\fhpositions_256x256_32bit_alpha_Thane.tga" },
+    { frame = imageFrameZeliek, texturePath = "Interface\\AddOns\\fhm\\fhpositions_256x256_32bit_alpha_Zeliek.tga" },
+}
 
--- Add the image to the image frame (example for setting up a texture)
-local imageTextureInit = imageFrameInit:CreateTexture(nil, "BACKGROUND")
-imageTextureInit:SetAllPoints(imageFrameInit)
-imageTextureInit:SetTexture("Interface\\AddOns\\fhm\\fhpositions_256x256_32bit_alpha_Init.tga")
-
--- Add the image to the image frame (example for setting up a texture)
-local imageTextureBlaumeux = imageFrameBlaumeux:CreateTexture(nil, "BACKGROUND")
-imageTextureBlaumeux:SetAllPoints(imageFrameBlaumeux)
-imageTextureBlaumeux:SetTexture("Interface\\AddOns\\fhm\\fhpositions_256x256_32bit_alpha_Blaumeux.tga")
-
--- Add the image to the image frame (example for setting up a texture)
-local imageTextureMograine = imageFrameMograine:CreateTexture(nil, "BACKGROUND")
-imageTextureMograine:SetAllPoints(imageFrameMograine)
-imageTextureMograine:SetTexture("Interface\\AddOns\\fhm\\fhpositions_256x256_32bit_alpha_Mograine.tga")
-
--- Add the image to the image frame (example for setting up a texture)
-local imageTextureSafe = imageFrameSafe:CreateTexture(nil, "BACKGROUND")
-imageTextureSafe:SetAllPoints(imageFrameSafe)
-imageTextureSafe:SetTexture("Interface\\AddOns\\fhm\\fhpositions_256x256_32bit_alpha_Safe.tga")
-
--- Add the image to the image frame (example for setting up a texture)
-local imageTextureThane = imageFrameThane:CreateTexture(nil, "BACKGROUND")
-imageTextureThane:SetAllPoints(imageFrameThane)
-imageTextureThane:SetTexture("Interface\\AddOns\\fhm\\fhpositions_256x256_32bit_alpha_Thane.tga")
-
--- Add the image to the image frame (example for setting up a texture)
-local imageTextureZeliek = imageFrameZeliek:CreateTexture(nil, "BACKGROUND")
-imageTextureZeliek:SetAllPoints(imageFrameZeliek)
-imageTextureZeliek:SetTexture("Interface\\AddOns\\fhm\\fhpositions_256x256_32bit_alpha_Zeliek.tga")
-
-
-
-
-
+-- Iterate through the table to set up textures
+for _, config in ipairs(imageTextures) do
+    AddImageToFrame(config.frame, config.texturePath)
+end
 
 -- Title for the number input frame
 local numberInputTitle = numberInputFrame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")

@@ -80,7 +80,7 @@ This project is licensed under the MIT License. See the LICENSE file for more de
 - [ ] Put attributed strategy for healers
 - [ ] Put attributed strategy for MDPS
 - [ ] Put attributed strategy for RDPS
-- [ ] Display a widow at the start of the fight the show a text of where the player is expected to be according to attributed strategy
+- [x] Display a widow at the start of the fight the show a text of where the player is expected to be according to attributed strategy
 - [ ] Add a map that could track player position according to current situation or at least just pin point where/ what he should be doing
 
 
