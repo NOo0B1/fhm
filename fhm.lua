@@ -213,6 +213,17 @@ function AddImageToFrame(frame, texturePath)
     return texture
 end
 
+-- Function to switch between two frames
+local function switchFrames(frame1, frame2)
+    if frame1:IsShown() then
+        frame1:Hide()   -- Hide the first frame
+        frame2:Show()   -- Show the second frame
+    else
+        frame1:Show()   -- Show the first frame
+        frame2:Hide()   -- Hide the second frame
+    end
+end
+
 -------------------
 -- PRE EXECUTION --
 -------------------
@@ -433,6 +444,7 @@ end)
 -- Function to print a log message for the 1-second timer
 local function printLog1Sec()
     DEFAULT_CHAT_FRAME:AddMessage("Log printed every 1 second!")
+    switchFrames(imageFrameInit,imageFrameBlaumeux)
 end
 
 -- Function to print a log message for the 15-second timer
