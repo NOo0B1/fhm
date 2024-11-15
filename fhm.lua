@@ -93,11 +93,8 @@ function fhm:PrintHelp()
     lrprint("Type /fhm config to configure this addon.")
 end
 
--- Configure
-function fhm:Configure()
-    --getglobal('LootResLoadFromTextTextBox'):SetText("")
-    getglobal('fhmConfigFrameStrat'):Show()
-end
+-- Initialize a table to store all custom frames and their initial positions
+local customFrames = {}
 
 -- Function to create a custom frame with title, size, and a toggle for dragging
 local function CreateCustomFrame(name, titleText, width, height)
@@ -105,6 +102,7 @@ local function CreateCustomFrame(name, titleText, width, height)
     local frame = CreateFrame("Frame", name, UIParent)
     frame:SetWidth(width)
     frame:SetHeight(height)
+    -- Initial position: Center
     frame:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
     frame:SetBackdrop({
         bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background", 
@@ -114,10 +112,12 @@ local function CreateCustomFrame(name, titleText, width, height)
     })
     frame:SetBackdropColor(0, 0, 0, 0.8)
 
-    -- Title text for the frame
-    local title = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-    title:SetPoint("TOP", frame, "TOP", 0, -10)
-    title:SetText(titleText)
+    -- Title text for the frame, if provided and not empty
+    if titleText and titleText ~= "" then
+        local title = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
+        title:SetPoint("TOP", frame, "TOP", 0, -10)
+        title:SetText(titleText)
+    end
 
     -- Enable mouse input for dragging
     frame:EnableMouse(true)
@@ -156,12 +156,41 @@ local function CreateCustomFrame(name, titleText, width, height)
     end)
     frame:SetScript("OnDragStop", function()
         frame:StopMovingOrSizing()
+
+        -- Get the new point of the frame
+        local point, relativeTo, relativePoint, x, y = frame:GetPoint()
+
+        -- Update all frames to the same position
+        for _, frameInfo in ipairs(customFrames) do
+            if frameInfo.frame ~= frame then
+                frameInfo.frame:ClearAllPoints()
+                frameInfo.frame:SetPoint(point, relativeTo, relativePoint, x, y)
+            end
+        end
     end)
 
     -- Initialize button state
     UpdateButtonAndFrameState()
 
+    -- Store the frame and its initial position
+    table.insert(customFrames, {
+        frame = frame,
+        initialPoint = { "CENTER", UIParent, "CENTER", 0, 0 } -- initial SetPoint parameters
+    })
+
     return frame
+end
+
+
+
+-- Function to reset all frames to their initial positions
+local function ResetFramesToInitialPosition()
+    for _, frameInfo in ipairs(customFrames) do
+        local frame = frameInfo.frame
+        local initialPoint = frameInfo.initialPoint
+        frame:ClearAllPoints()
+        frame:SetPoint(unpack(initialPoint))
+    end
 end
 
 
@@ -170,11 +199,28 @@ end
 -- PRE EXECUTION --
 -------------------
 
--- Create the frames using the CreateCustomFrame function
-local stratFrame = CreateCustomFrame("StratFrame", "Choose Your Strat", 300, 250)
-local roleFrame = CreateCustomFrame("RoleFrame", "Choose Your Role", 300, 250)
-local numberInputFrame = CreateCustomFrame("NumberInputFrame", nil, 300, 250)
-local imageFrame = CreateCustomFrame("ImageFrame", "", 256, 256) -- No title for the image frame
+-- Define a table with the frame configurations
+local frameConfigs = {
+    { name = "stratFrame", title = "Choose Your Strat", width = 300, height = 250 },
+    { name = "roleFrame", title = "Choose Your Role", width = 300, height = 250 },
+    { name = "numberInputFrame", title = nil, width = 300, height = 250 },
+    { name = "imageFrame", title = "", width = 256, height = 256 },
+}
+
+-- Function to create and store each frame with initial position
+local frames = {}
+for _, config in ipairs(frameConfigs) do
+    local frame = CreateCustomFrame(config.name, config.title, config.width, config.height)
+    
+    -- Ensure the frame is positioned before storing its initial position
+    frame:SetPoint("CENTER", UIParent, "CENTER", 0, 0) -- Default initial position
+
+    -- Add the frame and its initial position to the `frames` table
+    table.insert(frames, {
+        frame = frame,
+        initialPoint = { "CENTER", UIParent, "CENTER", 0, 0 } -- Default initial position
+    })
+end
 
 -- Add the image to the image frame (example for setting up a texture)
 local imageTexture = imageFrame:CreateTexture(nil, "BACKGROUND")
@@ -370,6 +416,9 @@ SlashCmdList["FHM"] = function(cmd)
             isDisabled=false
         elseif cmd == 'disable' then
             isDisabled=true
+        elseif cmd == 'reset' then
+            ResetFramesToInitialPosition()
+            lrprint("Frames reset to their initial positions.")
         elseif cmd == 'test' then
             imageFrame:Show()
             --myFrame:Show()

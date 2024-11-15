@@ -35,6 +35,7 @@ Once installed and enabled, FHM should function automatically. Here are some use
     /fhm config: Opens the addon's configuration window.
     /fhm enable : disable the functionnalities of the addon.
     /fhm disable : enable the functionnalities of the addon.
+    /fhm reset : reset frame position and values.
 
 The M means movable and U means unmovable on the top right button of the frame.
 ### Configuration
