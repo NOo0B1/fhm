@@ -36,7 +36,7 @@ local spotTable ={"Safespot","Thane","Mograine","Zeliek","Blaumeux"}
 
 -- Define the 2D array with additional columns "6 TANKS" and "TANK" at the start of each row
 local marksTable = {
-    { "6 TANKS", "TANK", 1, "Thane", "Thane", "Safespot" },
+    { "6 TANKS", "TANK", 1, "Safespot", "Thane", "Safespot","Zeliek","Thane" },
     { "6 TANKS", "TANK", 2, "Mograine", "Zeliek", "Zeliek", "Zeliek", "Blaumeux", "Blaumeux", "Blaumeux", "Safespot", "Safespot", "Safespot", "Mograine", "Mograine", "Mograine" },
     { "6 TANKS", "TANK", 3, "Zeliek", "Zeliek", "Blaumeux", "Blaumeux", "Blaumeux", "Safespot", "Safespot", "Safespot", "Mograine", "Mograine", "Mograine", "Zeliek", "Zeliek" },
     { "6 TANKS", "TANK", 4, "Blaumeux", "Mograine", "Mograine", "Mograine", "Zeliek", "Zeliek", "Zeliek", "Blaumeux", "Blaumeux", "Blaumeux", "Safespot", "Safespot", "Safespot" },
@@ -531,46 +531,57 @@ local framePairs = {
     { "Zeliek", imageFrameZeliek },
     { "Mograine", imageFrameMograine },
     { "Thane", imageFrameThane },
-    { "SafeSpot", imageFrameSafe },
+    { "Safespot", imageFrameSafe },
 }
 
--- local old_frame_2=nil
--- Function to switch between two frames
-local function switchFrames(frame2)
-    -- if old_frame_2==nil then
-    --     old_frame_2=frame2
-    -- end
+local function getBytes(s)
+    local bytes = {}
 
-    -- if old_frame_2 ~= frame2 then
-    --     imageFrameInit:Hide()
-    --     old_frame_2:Hide()
-    -- end
 
-    if imageFrameInit:IsShown() then
-        imageFrameInit:Hide()
-        frame2:Show()
-    else
-        frame2:Hide()
-        imageFrameInit:Show() 
+
+    for i = 1, string.len(s) do
+        table.insert(bytes, string.byte(s, i))
     end
+    return table.concat(bytes, " ")
 end
 
-
+local countFHM=0
 -- Function to print a log message for the 1-second timer
 local function printLog1Sec()
-    DEFAULT_CHAT_FRAME:AddMessage("Log printed every 0.5 seconds! markNum= " .. markNum .. " and currentSpotTobe = " .. currentSpotTobe)
-    for _, row in ipairs(framePairs) do
+ --lrprint("countFHM : " .. countFHM)
+
+    if currentSpotTobe=="" then
+        currentSpotTobe=getMarkData(selectedStratFHM, selectedRoleFHM,numberFHM,markNum)
+    end
+    --todo ne trouve pas au markNum=3 la ligne avec safespot dans framePairs wHY!!!!
+    --DEFAULT_CHAT_FRAME:AddMessage("Log printed every 0.5 seconds! markNum= " .. markNum .. " and currentSpotTobe = " .. currentSpotTobe)
+    for _, row in ipairs(framePairs) do        
         if row[1] == currentSpotTobe then
-            switchFrames(row[2])
+            --lrprint("row 1: " .. row[1] .. "   row2: " .. row[2]:GetName())
+            imageFrameInit:Hide()
+            imageFrameBlaumeux:Hide()
+            imageFrameSafe:Hide()
+            imageFrameMograine:Hide()
+            imageFrameThane:Hide()
+            imageFrameZeliek:Hide()
+            if countFHM==0 then
+                row[2]:Show()
+                countFHM=countFHM+1
+            else
+                imageFrameInit:Show()
+                countFHM=0
+            end
+
         end
     end
+
 end
 
 -- Function to print a log message for the 15-second timer
 local function printLog15Sec()
     markNum=markNum+1
     currentSpotTobe=getMarkData(selectedStratFHM, selectedRoleFHM,numberFHM,markNum)
-    DEFAULT_CHAT_FRAME:AddMessage("Log printed every 15 seconds! markNum= " .. markNum .. " and currentSpotTobe = " .. currentSpotTobe)
+    --DEFAULT_CHAT_FRAME:AddMessage("Log printed every 15 seconds! markNum= " .. markNum .. " and currentSpotTobe = " .. currentSpotTobe)
 
 end
 
