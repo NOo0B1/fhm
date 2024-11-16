@@ -224,6 +224,26 @@ local function switchFrames(frame1, frame2)
     end
 end
 
+-- Function to find and return the data based on the four arguments
+local function getMarkData(strat, role, attributedNumber, numberOfMarkTotal)
+    -- Iterate through the marksTable to find the matching row
+    for _, row in ipairs(marksTable) do
+        -- Check if the values in the first, second, and third columns match the arguments
+        if row[1] == strat and row[2] == role and row[3] == attributedNumber then
+            -- Return the value in the column specified by the fourth argument (arg4)
+            -- Make sure to check if the column number (arg4) is within bounds
+            numberOfMarkTotal=numberOfMarkTotal+3
+            return row[numberOfMarkTotal]
+            -- if arg4 >= 1 and arg4 <= #row then
+            --     return row[arg4]
+            -- else
+            --     return "Column number out of bounds."
+            -- end
+        end
+    end
+    return "No matching row found."
+end
+
 -------------------
 -- PRE EXECUTION --
 -------------------
@@ -405,7 +425,30 @@ SlashCmdList["FHM"] = function(cmd)
             ResetFramesToInitialPosition()
             lrprint("Frames reset to their initial positions.")
             isEncounterStarted=false;
+            stratFrame:Hide()
+            roleFrame:Hide()
+            numberInputFrame:Hide()
+            imageFrameInit:Hide()
+            imageFrameBlaumeux:Hide()
+            imageFrameSafe:Hide()
+            imageFrameMograine:Hide()
+            imageFrameThane:Hide()
+            imageFrameZeliek:Hide()
+        elseif cmd == 'close' then
+            isEncounterStarted=false;
+            stratFrame:Hide()
+            roleFrame:Hide()
+            numberInputFrame:Hide()
+            imageFrameInit:Hide()
+            imageFrameBlaumeux:Hide()
+            imageFrameSafe:Hide()
+            imageFrameMograine:Hide()
+            imageFrameThane:Hide()
+            imageFrameZeliek:Hide()
+
         elseif cmd == 'test' then
+            local test = getMarkData("6 TANKS", "TANK",1,3)
+            lrprint("test value : " .. test)
             selectedRole="TANK"
             selectedStrat="6 TANKS"
             number=1
@@ -458,17 +501,19 @@ local lastTime15Sec = GetTime()  -- For 15-second timer
 
 -- Timer function to call the log functions every 1 and 15 seconds
 fhm:SetScript("OnUpdate", function(self)
-    local currentTime = GetTime()  -- Get the current game time
+    if isEncounterStarted then
+        local currentTime = GetTime()  -- Get the current game time
 
-    -- Check if 1 second has passed
-    if currentTime - lastTime1Sec >= 1 then
-        printLog1Sec()  -- Call the function to print the 1-second log message
-        lastTime1Sec = currentTime  -- Update lastTime1Sec to the current time
-    end
-
-    -- Check if 15 seconds have passed
-    if currentTime - lastTime15Sec >= 15 then
-        printLog15Sec()  -- Call the function to print the 15-second log message
-        lastTime15Sec = currentTime  -- Update lastTime15Sec to the current time
+        -- Check if 1 second has passed
+        if currentTime - lastTime1Sec >= 0.5 then
+            printLog1Sec()  -- Call the function to print the 1-second log message
+            lastTime1Sec = currentTime  -- Update lastTime1Sec to the current time
+        end
+    
+        -- Check if 15 seconds have passed
+        if currentTime - lastTime15Sec >= 15 then
+            printLog15Sec()  -- Call the function to print the 15-second log message
+            lastTime15Sec = currentTime  -- Update lastTime15Sec to the current time
+        end
     end
 end)
