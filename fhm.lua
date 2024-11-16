@@ -9,6 +9,9 @@ fhm:RegisterEvent("UNIT_HEALTH")
 -- VARIABLES --
 ---------------
 
+local markNum=1
+local currentSpotTobe=""
+
 local raids = 'Naxxramas'
 
 local isDisabled=true
@@ -29,14 +32,16 @@ local bossSpells = {
     ["Sir Zeliek"] = 28835        -- Example spell ID for Holy Wrath
 }
 
+local spotTable ={"Safespot","Thane","Mograine","Zeliek","Blaumeux"}
+
 -- Define the 2D array with additional columns "6 TANKS" and "TANK" at the start of each row
 local marksTable = {
-    { "6 TANKS", "TANK", 1, "Thane ->", "Thane ->", "Safespot->", "Zeliek->", "Zeliek->", "Run to Blaumeux->", "Blaumeux->", "Blaumeux->", "Run to Safe Spot->", "Safespot->", "Safespot->", "Run to Mograine->", "Mograine->" },
-    { "6 TANKS", "TANK", 2, "Mograine->", "Rune to Zeliek->", "Zeliek->", "Zeliek->", "Run to Blaumeux->", "Blaumeux->", "Blaumeux->", "Run to Safe Spot->", "Safespot->", "Safespot->", "Run to Mograine->", "Mograine->", "Mograine->" },
-    { "6 TANKS", "TANK", 3, "Zeliek->", "Zeliek->", "Run to Blaumeux->", "Blaumeux->", "Blaumeux->", "Run to Safe Spot->", "Safespot->", "Safespot->", "Run to Mograine->", "Mograine->", "Mograine->", "Run to Zeliek->", "Zeliek->" },
-    { "6 TANKS", "TANK", 4, "Blaumeux->", "Run to Mograine->", "Mograine->", "Mograine->", "Run to Zeliek->", "Zeliek->", "Zeliek->", "Run to Blaumeux->", "Blaumeux->", "Blaumeux->", "Run to Safe Spot->", "Safespot->", "Safespot->" },
-    { "6 TANKS", "TANK", 5, "Safespot->", "Mograine->", "Mograine->", "Run to Zeliek->", "Zeliek->", "Zeliek->", "Run to Blaumeux->", "Blaumeux->", "Blaumeux->", "Run to Safe Spot->", "Safespot->", "Safespot->", "Run to Mograine->" },
-    { "6 TANKS", "TANK", 6, "Safespot->", "Blaumeux->", "Blaumeux->", "Run to Safe Spot->", "Safespot->", "Safespot->", "Run to Mograine->", "Mograine->", "Mograine->", "Rune to Zeliek->", "Zeliek->", "Zeliek->", "Run to Blaumeux->" }
+    { "6 TANKS", "TANK", 1, "Thane", "Thane", "Safespot" },
+    { "6 TANKS", "TANK", 2, "Mograine", "Zeliek", "Zeliek", "Zeliek", "Blaumeux", "Blaumeux", "Blaumeux", "Safespot", "Safespot", "Safespot", "Mograine", "Mograine", "Mograine" },
+    { "6 TANKS", "TANK", 3, "Zeliek", "Zeliek", "Blaumeux", "Blaumeux", "Blaumeux", "Safespot", "Safespot", "Safespot", "Mograine", "Mograine", "Mograine", "Zeliek", "Zeliek" },
+    { "6 TANKS", "TANK", 4, "Blaumeux", "Mograine", "Mograine", "Mograine", "Zeliek", "Zeliek", "Zeliek", "Blaumeux", "Blaumeux", "Blaumeux", "Safespot", "Safespot", "Safespot" },
+    { "6 TANKS", "TANK", 5, "Safespot", "Mograine", "Mograine", "Zeliek", "Zeliek", "Zeliek", "Blaumeux", "Blaumeux", "Blaumeux", "Safespot", "Safespot", "Safespot", "Mograine" },
+    { "6 TANKS", "TANK", 6, "Safespot", "Blaumeux", "Blaumeux", "Safespot", "Safespot", "Safespot", "Mograine", "Mograine", "Mograine", "Zeliek", "Zeliek", "Zeliek", "Blaumeux" }
 }
 
 
@@ -213,15 +218,18 @@ function AddImageToFrame(frame, texturePath)
     return texture
 end
 
--- Function to switch between two frames
-local function switchFrames(frame1, frame2)
-    if frame1:IsShown() then
-        frame1:Hide()   -- Hide the first frame
-        frame2:Show()   -- Show the second frame
-    else
-        frame1:Show()   -- Show the first frame
-        frame2:Hide()   -- Hide the second frame
-    end
+local function stopshit()
+    markNum=0
+    isEncounterStarted=false;
+    stratFrame:Hide()
+    roleFrame:Hide()
+    numberInputFrame:Hide()
+    imageFrameInit:Hide()
+    imageFrameBlaumeux:Hide()
+    imageFrameSafe:Hide()
+    imageFrameMograine:Hide()
+    imageFrameThane:Hide()
+    imageFrameZeliek:Hide()
 end
 
 -- Function to find and return the data based on the four arguments
@@ -233,16 +241,43 @@ local function getMarkData(strat, role, attributedNumber, numberOfMarkTotal)
             -- Return the value in the column specified by the fourth argument (arg4)
             -- Make sure to check if the column number (arg4) is within bounds
             numberOfMarkTotal=numberOfMarkTotal+3
-            return row[numberOfMarkTotal]
-            -- if arg4 >= 1 and arg4 <= #row then
-            --     return row[arg4]
-            -- else
-            --     return "Column number out of bounds."
-            -- end
+            -- Count the number of columns in the current row
+            local columnCount = 0
+            for _ in pairs(row) do
+                columnCount = columnCount + 1
+            end
+            if numberOfMarkTotal >= 1 and numberOfMarkTotal <= columnCount then
+                return row[numberOfMarkTotal]
+            else
+                markNum=0
+                isEncounterStarted=false;
+                stratFrame:Hide()
+                roleFrame:Hide()
+                numberInputFrame:Hide()
+                imageFrameInit:Hide()
+                imageFrameBlaumeux:Hide()
+                imageFrameSafe:Hide()
+                imageFrameMograine:Hide()
+                imageFrameThane:Hide()
+                imageFrameZeliek:Hide()
+                return "Column number out of bounds."
+            end
         end
     end
+    markNum=0
+    isEncounterStarted=false;
+    stratFrame:Hide()
+    roleFrame:Hide()
+    numberInputFrame:Hide()
+    imageFrameInit:Hide()
+    imageFrameBlaumeux:Hide()
+    imageFrameSafe:Hide()
+    imageFrameMograine:Hide()
+    imageFrameThane:Hide()
+    imageFrameZeliek:Hide()
     return "No matching row found."
 end
+
 
 -------------------
 -- PRE EXECUTION --
@@ -302,7 +337,7 @@ stratTitle:SetText("Choose Your Strat")
 -- Strat selection buttons
 local strats = {"6 Tanks", "8 Tanks"}
 local stratButtons = {}
-local selectedStrat = nil
+selectedStratFHM = nil
 
 -- Create the strat selection buttons
 for i, strat in ipairs(strats) do
@@ -315,9 +350,9 @@ for i, strat in ipairs(strats) do
 
     -- Set up button click event to set the selected strat
     stratButtons[stratName]:SetScript("OnClick", function()
-        -- Update the selectedStrat variable
-        selectedStrat = stratName
-        lrprint("Strat selected: " .. selectedStrat)
+        -- Update the selectedStratFHM variable
+        selectedStratFHM = stratName
+        lrprint("Strat selected: " .. selectedStratFHM)
 
         -- Hide the strat frame and show the number input frame
         stratFrame:Hide()
@@ -333,7 +368,7 @@ roleTitle:SetText("Choose Your Role")
 -- Role selection buttons
 local roles = {"Tank", "Healer", "Melee DPS", "Ranged DPS"}
 local roleButtons = {}
-local selectedRole = nil
+selectedRoleFHM = nil
 
 -- Create the role selection buttons
 for i, role in ipairs(roles) do
@@ -346,12 +381,12 @@ for i, role in ipairs(roles) do
 
     -- Set up button click event to set the selected role
     roleButtons[roleName]:SetScript("OnClick", function()
-        -- Update the selectedRole variable
-        selectedRole = roleName
-        lrprint("Role selected: " .. selectedRole)
+        -- Update the selectedRoleFHM variable
+        selectedRoleFHM = roleName
+        lrprint("Role selected: " .. selectedRoleFHM)
 
         -- Update the title of the number input frame to reflect the selected role
-        numberInputTitle:SetText("Enter a number for " .. selectedRole)
+        numberInputTitle:SetText("Enter a number for " .. selectedRoleFHM)
 
         -- Hide the role frame and show the number input frame
         roleFrame:Hide()
@@ -380,13 +415,14 @@ confirmButton:SetHeight(30)
 confirmButton:SetPoint("TOP", numberInputFrame, "TOP", 0, -100)
 confirmButton:SetText("Confirm")
 
+numberFHM=nil
 -- Function to handle the trigger action on confirm button click
 confirmButton:SetScript("OnClick", function()
-    local number = tonumber(numberInputBox:GetText())  -- Get the number from the input box
+    numberFHM = tonumber(numberInputBox:GetText())  -- Get the number from the input box
 
     -- Check if number is valid
-    if number then
-        print("Role: " .. selectedRole .. ", Number: " .. number)
+    if numberFHM then
+        print("Role: " .. selectedRoleFHM .. ", Number: " .. numberFHM)
         isDisabled=false
         numberInputFrame:Hide()
     else
@@ -422,6 +458,7 @@ SlashCmdList["FHM"] = function(cmd)
         elseif cmd == 'disable' then
             isDisabled=true
         elseif cmd == 'reset' then
+            markNum=0
             ResetFramesToInitialPosition()
             lrprint("Frames reset to their initial positions.")
             isEncounterStarted=false;
@@ -435,6 +472,7 @@ SlashCmdList["FHM"] = function(cmd)
             imageFrameThane:Hide()
             imageFrameZeliek:Hide()
         elseif cmd == 'close' then
+            markNum=0
             isEncounterStarted=false;
             stratFrame:Hide()
             roleFrame:Hide()
@@ -447,16 +485,18 @@ SlashCmdList["FHM"] = function(cmd)
             imageFrameZeliek:Hide()
 
         elseif cmd == 'test' then
+            isDisabled=false
             local test = getMarkData("6 TANKS", "TANK",1,3)
             lrprint("test value : " .. test)
-            selectedRole="TANK"
-            selectedStrat="6 TANKS"
-            number=1
+            selectedRoleFHM="TANK"
+            selectedStratFHM="6 TANKS"
+            numberFHM=1
             StartEncounter()
             --imageFrameInit:Show()
             --myFrame:Show()
-        elseif cmd == 'testThane' then
-            imageFrameThane:Show()
+        elseif cmd == 'test1' then
+            isDisabled=false
+            StartEncounter()
         elseif cmd == 'config' or cmd == '' then
             stratFrame:Show()
         else
@@ -484,15 +524,54 @@ fhm:SetScript("OnEvent", function(self, event, ...)
     end
 end)
 
+
+
+local framePairs = {
+    { "Blaumeux", imageFrameBlaumeux },
+    { "Zeliek", imageFrameZeliek },
+    { "Mograine", imageFrameMograine },
+    { "Thane", imageFrameThane },
+    { "SafeSpot", imageFrameSafe },
+}
+
+-- local old_frame_2=nil
+-- Function to switch between two frames
+local function switchFrames(frame2)
+    -- if old_frame_2==nil then
+    --     old_frame_2=frame2
+    -- end
+
+    -- if old_frame_2 ~= frame2 then
+    --     imageFrameInit:Hide()
+    --     old_frame_2:Hide()
+    -- end
+
+    if imageFrameInit:IsShown() then
+        imageFrameInit:Hide()
+        frame2:Show()
+    else
+        frame2:Hide()
+        imageFrameInit:Show() 
+    end
+end
+
+
 -- Function to print a log message for the 1-second timer
 local function printLog1Sec()
-    DEFAULT_CHAT_FRAME:AddMessage("Log printed every 1 second!")
-    switchFrames(imageFrameInit,imageFrameBlaumeux)
+    DEFAULT_CHAT_FRAME:AddMessage("Log printed every 0.5 seconds! markNum= " .. markNum .. " and currentSpotTobe = " .. currentSpotTobe)
+    for _, row in ipairs(framePairs) do
+        if row[1] == currentSpotTobe then
+            switchFrames(row[2])
+        end
+    end
 end
 
 -- Function to print a log message for the 15-second timer
 local function printLog15Sec()
-    DEFAULT_CHAT_FRAME:AddMessage("Log printed every 15 seconds!")
+    markNum=markNum+1
+    currentSpotTobe=getMarkData(selectedStratFHM, selectedRoleFHM,numberFHM,markNum)
+    DEFAULT_CHAT_FRAME:AddMessage("Log printed every 15 seconds! markNum= " .. markNum .. " and currentSpotTobe = " .. currentSpotTobe)
+
 end
 
 -- Initialize the start times
@@ -501,7 +580,7 @@ local lastTime15Sec = GetTime()  -- For 15-second timer
 
 -- Timer function to call the log functions every 1 and 15 seconds
 fhm:SetScript("OnUpdate", function(self)
-    if isEncounterStarted then
+    if isEncounterStarted and not isDisabled then
         local currentTime = GetTime()  -- Get the current game time
 
         -- Check if 1 second has passed
