@@ -10,7 +10,7 @@ fhm:RegisterEvent("UNIT_HEALTH")
 ---------------
 
 local markNum=1
-local currentSpotTobe=""
+currentSpotTobeFHM=""
 
 local raids = 'Naxxramas'
 
@@ -36,12 +36,12 @@ local spotTable ={"Safespot","Thane","Mograine","Zeliek","Blaumeux"}
 
 -- Define the 2D array with additional columns "6 TANKS" and "TANK" at the start of each row
 local marksTable = {
-    { "6 TANKS", "TANK", 1, "Safespot", "Thane", "Safespot","Zeliek","Thane" },
-    { "6 TANKS", "TANK", 2, "Mograine", "Zeliek", "Zeliek", "Zeliek", "Blaumeux", "Blaumeux", "Blaumeux", "Safespot", "Safespot", "Safespot", "Mograine", "Mograine", "Mograine" },
-    { "6 TANKS", "TANK", 3, "Zeliek", "Zeliek", "Blaumeux", "Blaumeux", "Blaumeux", "Safespot", "Safespot", "Safespot", "Mograine", "Mograine", "Mograine", "Zeliek", "Zeliek" },
-    { "6 TANKS", "TANK", 4, "Blaumeux", "Mograine", "Mograine", "Mograine", "Zeliek", "Zeliek", "Zeliek", "Blaumeux", "Blaumeux", "Blaumeux", "Safespot", "Safespot", "Safespot" },
-    { "6 TANKS", "TANK", 5, "Safespot", "Mograine", "Mograine", "Zeliek", "Zeliek", "Zeliek", "Blaumeux", "Blaumeux", "Blaumeux", "Safespot", "Safespot", "Safespot", "Mograine" },
-    { "6 TANKS", "TANK", 6, "Safespot", "Blaumeux", "Blaumeux", "Safespot", "Safespot", "Safespot", "Mograine", "Mograine", "Mograine", "Zeliek", "Zeliek", "Zeliek", "Blaumeux" }
+    { "6 Tanks", "Tank", 1, "Safespot", "Thane", "Safespot","Zeliek","Thane" },
+    { "6 Tanks", "Tank", 2, "Mograine", "Zeliek", "Zeliek", "Zeliek", "Blaumeux", "Blaumeux", "Blaumeux", "Safespot", "Safespot", "Safespot", "Mograine", "Mograine", "Mograine" },
+    { "6 Tanks", "Tank", 3, "Zeliek", "Zeliek", "Blaumeux", "Blaumeux", "Blaumeux", "Safespot", "Safespot", "Safespot", "Mograine", "Mograine", "Mograine", "Zeliek", "Zeliek" },
+    { "6 Tanks", "Tank", 4, "Blaumeux", "Mograine", "Mograine", "Mograine", "Zeliek", "Zeliek", "Zeliek", "Blaumeux", "Blaumeux", "Blaumeux", "Safespot", "Safespot", "Safespot" },
+    { "6 Tanks", "Tank", 5, "Safespot", "Mograine", "Mograine", "Zeliek", "Zeliek", "Zeliek", "Blaumeux", "Blaumeux", "Blaumeux", "Safespot", "Safespot", "Safespot", "Mograine" },
+    { "6 Tanks", "Tank", 6, "Safespot", "Blaumeux", "Blaumeux", "Safespot", "Safespot", "Safespot", "Mograine", "Mograine", "Mograine", "Zeliek", "Zeliek", "Zeliek", "Blaumeux" }
 }
 
 
@@ -234,10 +234,13 @@ end
 
 -- Function to find and return the data based on the four arguments
 local function getMarkData(strat, role, attributedNumber, numberOfMarkTotal)
+    local countProvider=0
     -- Iterate through the marksTable to find the matching row
     for _, row in ipairs(marksTable) do
+        countProvider=countProvider+1
         -- Check if the values in the first, second, and third columns match the arguments
         if row[1] == strat and row[2] == role and row[3] == attributedNumber then
+            
             -- Return the value in the column specified by the fourth argument (arg4)
             -- Make sure to check if the column number (arg4) is within bounds
             numberOfMarkTotal=numberOfMarkTotal+3
@@ -249,33 +252,17 @@ local function getMarkData(strat, role, attributedNumber, numberOfMarkTotal)
             if numberOfMarkTotal >= 1 and numberOfMarkTotal <= columnCount then
                 return row[numberOfMarkTotal]
             else
-                markNum=0
-                isEncounterStarted=false;
-                stratFrame:Hide()
-                roleFrame:Hide()
-                numberInputFrame:Hide()
-                imageFrameInit:Hide()
-                imageFrameBlaumeux:Hide()
-                imageFrameSafe:Hide()
-                imageFrameMograine:Hide()
-                imageFrameThane:Hide()
-                imageFrameZeliek:Hide()
+                stopshit()
                 return "Column number out of bounds."
             end
         end
     end
-    markNum=0
-    isEncounterStarted=false;
-    stratFrame:Hide()
-    roleFrame:Hide()
-    numberInputFrame:Hide()
-    imageFrameInit:Hide()
-    imageFrameBlaumeux:Hide()
-    imageFrameSafe:Hide()
-    imageFrameMograine:Hide()
-    imageFrameThane:Hide()
-    imageFrameZeliek:Hide()
-    return "No matching row found."
+
+    if  countProvider==0 then
+        lrprint("test3")
+        stopshit()
+        return "No matching row found."
+    end
 end
 
 
@@ -337,7 +324,7 @@ stratTitle:SetText("Choose Your Strat")
 -- Strat selection buttons
 local strats = {"6 Tanks", "8 Tanks"}
 local stratButtons = {}
-selectedStratFHM = nil
+selectedStratFHM = ""
 
 -- Create the strat selection buttons
 for i, strat in ipairs(strats) do
@@ -368,7 +355,7 @@ roleTitle:SetText("Choose Your Role")
 -- Role selection buttons
 local roles = {"Tank", "Healer", "Melee DPS", "Ranged DPS"}
 local roleButtons = {}
-selectedRoleFHM = nil
+selectedRoleFHM = ""
 
 -- Create the role selection buttons
 for i, role in ipairs(roles) do
@@ -422,7 +409,7 @@ confirmButton:SetScript("OnClick", function()
 
     -- Check if number is valid
     if numberFHM then
-        print("Role: " .. selectedRoleFHM .. ", Number: " .. numberFHM)
+        print("Strat: ".. selectedStratFHM.. "Role: " .. selectedRoleFHM .. ", Number: " .. numberFHM)
         isDisabled=false
         numberInputFrame:Hide()
     else
@@ -472,29 +459,9 @@ SlashCmdList["FHM"] = function(cmd)
             imageFrameThane:Hide()
             imageFrameZeliek:Hide()
         elseif cmd == 'close' then
-            markNum=0
-            isEncounterStarted=false;
-            stratFrame:Hide()
-            roleFrame:Hide()
-            numberInputFrame:Hide()
-            imageFrameInit:Hide()
-            imageFrameBlaumeux:Hide()
-            imageFrameSafe:Hide()
-            imageFrameMograine:Hide()
-            imageFrameThane:Hide()
-            imageFrameZeliek:Hide()
-
+            stopshit()
         elseif cmd == 'test' then
-            isDisabled=false
-            local test = getMarkData("6 TANKS", "TANK",1,3)
-            lrprint("test value : " .. test)
-            selectedRoleFHM="TANK"
-            selectedStratFHM="6 TANKS"
-            numberFHM=1
-            StartEncounter()
-            --imageFrameInit:Show()
-            --myFrame:Show()
-        elseif cmd == 'test1' then
+            lrprint("selectedRoleFHM : " .. selectedRoleFHM ..",selectedStratFHM : " .. selectedStratFHM ..",numberFHM : " .. numberFHM )
             isDisabled=false
             StartEncounter()
         elseif cmd == 'config' or cmd == '' then
@@ -545,14 +512,15 @@ local countFHM=0
 -- Function to print a log message for the 1-second timer
 local function printLog1Sec()
  --lrprint("countFHM : " .. countFHM)
-
-    if currentSpotTobe=="" then
-        currentSpotTobe=getMarkData(selectedStratFHM, selectedRoleFHM,numberFHM,markNum)
+--  lrprint("printLog1Sec isEncounterStarted : " .. tostring(isEncounterStarted))
+--  lrprint("print1sec : " .. selectedStratFHM .. " , ".. selectedRoleFHM.. " , "..numberFHM.. " , "..markNum)
+    if currentSpotTobeFHM=="" then
+        currentSpotTobeFHM=getMarkData(selectedStratFHM, selectedRoleFHM,numberFHM,markNum)
     end
-    --todo ne trouve pas au markNum=3 la ligne avec safespot dans framePairs wHY!!!!
-    --DEFAULT_CHAT_FRAME:AddMessage("Log printed every 0.5 seconds! markNum= " .. markNum .. " and currentSpotTobe = " .. currentSpotTobe)
+    --DEFAULT_CHAT_FRAME:AddMessage("Log printed every 0.5 seconds! markNum= " .. markNum)
+   -- DEFAULT_CHAT_FRAME:AddMessage("currentSpotTobeFHM = " .. currentSpotTobeFHM)
     for _, row in ipairs(framePairs) do        
-        if row[1] == currentSpotTobe then
+        if row[1] == currentSpotTobeFHM then
             --lrprint("row 1: " .. row[1] .. "   row2: " .. row[2]:GetName())
             imageFrameInit:Hide()
             imageFrameBlaumeux:Hide()
@@ -576,22 +544,37 @@ end
 -- Function to print a log message for the 15-second timer
 local function printLog15Sec()
     markNum=markNum+1
-    currentSpotTobe=getMarkData(selectedStratFHM, selectedRoleFHM,numberFHM,markNum)
-    --DEFAULT_CHAT_FRAME:AddMessage("Log printed every 15 seconds! markNum= " .. markNum .. " and currentSpotTobe = " .. currentSpotTobe)
+    -- lrprint("printLog15Sec isEncounterStarted : " .. tostring(isEncounterStarted))
+
+    currentSpotTobeFHM=getMarkData(selectedStratFHM, selectedRoleFHM,numberFHM,markNum)
+    --DEFAULT_CHAT_FRAME:AddMessage("Log printed every 15 seconds! markNum= " .. markNum .. " and currentSpotTobeFHM = " .. currentSpotTobeFHM)
+    --lrprint("print15sec : " .. selectedStratFHM .. " , ".. selectedRoleFHM.. " , "..numberFHM.. " , "..markNum)
+    --lrprint("currentSpotTobeFHM: "..getMarkData(selectedStratFHM, selectedRoleFHM,numberFHM,markNum))
 
 end
 
 -- Initialize the start times
 local lastTime1Sec = GetTime()  -- For 1-second timer
 local lastTime15Sec = GetTime()  -- For 15-second timer
-
+-- local countfhm=0
 -- Timer function to call the log functions every 1 and 15 seconds
 fhm:SetScript("OnUpdate", function(self)
+    -- if not numberFHM then
+    --     numberFHM=0
+    -- end
+    -- if countfhm==0 then
+    --     lrprint("countfhm 0 isEncounterStarted : " .. tostring(isEncounterStarted))
+    -- end
+    -- if countfhm==1 then
+    --     lrprint("countfhm 1 isEncounterStarted : " .. tostring(isEncounterStarted))
+    --     countfhm=countfhm+1
+    -- end
     if isEncounterStarted and not isDisabled then
+        -- countfhm=countfhm+1
         local currentTime = GetTime()  -- Get the current game time
 
         -- Check if 1 second has passed
-        if currentTime - lastTime1Sec >= 0.5 then
+        if currentTime - lastTime1Sec >= 2 then
             printLog1Sec()  -- Call the function to print the 1-second log message
             lastTime1Sec = currentTime  -- Update lastTime1Sec to the current time
         end

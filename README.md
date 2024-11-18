@@ -30,12 +30,14 @@ Method 2: Manual
 
 Once installed and enabled, FHM should function automatically. Here are some useful commands and options:
 
-    /fhm: Lists all available commands.
+    /fhm: Opens the addon's configuration window.
     /fhm help: Lists all available commands.
     /fhm config: Opens the addon's configuration window.
     /fhm enable : disable the functionnalities of the addon.
     /fhm disable : enable the functionnalities of the addon.
     /fhm reset : reset frame position and values.
+    /fhm stop : stop current fight and frame and values. Do not reset frame position
+    /fhm test : after configuring with /fhm or /fhm config, this will simulate a start of a fight with the 4 horsemen
 
 The M means movable and U means unmovable on the top right button of the frame.
 ### Configuration
