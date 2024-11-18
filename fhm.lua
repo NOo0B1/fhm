@@ -145,7 +145,8 @@ local function CreateCustomFrame(name, titleText, width, height)
     local toggleButton = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
     toggleButton:SetWidth(20)
     toggleButton:SetHeight(20)
-    toggleButton:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -5, -5)
+    toggleButton:SetPoint("TOPLEFT", frame, "TOPLEFT",5, -5)
+    
 
     -- Function to update button color and frame movability
     local function UpdateButtonAndFrameState()
@@ -185,6 +186,19 @@ local function CreateCustomFrame(name, titleText, width, height)
                 frameInfo.frame:SetPoint(point, relativeTo, relativePoint, x, y)
             end
         end
+    end)
+
+    -- Create the toggle button to close windows
+    local toggleButtonStop = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
+    toggleButtonStop:SetWidth(20)
+    toggleButtonStop:SetHeight(20)
+    toggleButtonStop:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -5, -5)
+    toggleButtonStop:SetBackdropColor(1, 0, 0, 1) -- Red for unmovable
+    toggleButtonStop:SetText("X")
+
+    -- Toggle movability when the button is clicked
+    toggleButtonStop:SetScript("OnClick", function()
+        frame:Hide()
     end)
 
     -- Initialize button state
