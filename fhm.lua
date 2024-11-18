@@ -510,17 +510,13 @@ end
 
 -- Register event handlers
 fhm:SetScript("OnEvent", function(self, event, ...)
-    if isDisabled then
-        -- do nothing
-        --lrprint("fhm is disabled.")
-    else
-        loadstring([[if event == "COMBAT_LOG_EVENT_UNFILTERED" then
-            OnCombatLogEvent(self, event, ...)
+    if not isDisabled and not isEncounterStarted then
+        if event == "COMBAT_LOG_EVENT_UNFILTERED" then
+             loadstring([[OnCombatLogEvent(self, event, ...)]])()
         elseif event == "UNIT_HEALTH" then
-            local unit = ...
+             loadstring([[local unit = ...]])()
             OnHealthEvent(self, event, unit)
-        end]])()
-
+        end
     end
 end)
 
