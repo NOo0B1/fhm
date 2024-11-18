@@ -41,7 +41,7 @@ local marksTable = {
     { "6 Tanks", "Tank", 3, "Zeliek", "Zeliek", "Blaumeux", "Blaumeux", "Blaumeux", "Safespot", "Safespot", "Safespot", "Mograine", "Mograine", "Mograine", "Zeliek", "Zeliek" },
     { "6 Tanks", "Tank", 4, "Blaumeux", "Mograine", "Mograine", "Mograine", "Zeliek", "Zeliek", "Zeliek", "Blaumeux", "Blaumeux", "Blaumeux", "Safespot", "Safespot", "Safespot" },
     { "6 Tanks", "Tank", 5, "Safespot", "Mograine", "Mograine", "Zeliek", "Zeliek", "Zeliek", "Blaumeux", "Blaumeux", "Blaumeux", "Safespot", "Safespot", "Safespot", "Mograine" },
-    { "6 Tanks", "Tank", 6, "Safespot", "Blaumeux", "Blaumeux", "Safespot", "Safespot", "Safespot", "Mograine", "Mograine", "Mograine", "Zeliek", "Zeliek", "Zeliek", "Blaumeux" }
+    { "6 Tanks", "Tank", 6, "Safespot", "Blaumeux", "Blaumeux", "Safespot", "Safespot", "Safespot", "Mograine", "Mograine", "Mograine", "Zeliek", "Zeliek", "Zeliek", "Blaumeux" },
 }
 
 
@@ -53,10 +53,11 @@ local function isNumber(input)
     return tonumber(input) ~= nil
 end
 
--- Function to trim spaces from the start and end of a string
-function trim(str)
-    return str:match("^%s*(.-)%s*$")  -- Remove leading and trailing whitespace
-end
+-- -- Function to trim spaces from the start and end of a string
+-- local function trim(str)
+--     if type(str) ~= "string" then return "" end
+--     return str:match("^%s*(.-)%s*$")
+-- end
 
 function lrprint(a)
     if a == nil then
@@ -437,7 +438,7 @@ imageFrameZeliek:Hide()
 SLASH_FHM1 = "/fhm"
 SlashCmdList["FHM"] = function(cmd)
     if cmd then
-        cmd = trim(cmd)
+        -- cmd = trim(cmd)
         if cmd == 'help' or cmd =='h' then
             fhm:PrintHelp()
         elseif cmd == 'enable' then
