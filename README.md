@@ -40,6 +40,9 @@ Once installed and enabled, FHM should function automatically. Here are some use
     /fhm test : after configuring with /fhm or /fhm config, this will simulate a start of a fight with the 4 horsemen
 
 The M means movable and U means unmovable on the top right button of the frame.
+
+If you are a DPS , put 1 in the attrib number. For tanks and healers, raid leader should check the excel in this repo to attrib you the number.
+
 ### Configuration
 
 The addon includes a configuration interface accessible via the options menu (or the /youraddon command). Here, you can customize settings such as:
@@ -79,12 +82,13 @@ This project is licensed under the MIT License. See the LICENSE file for more de
 - [x] Put a listener to catch four horsemen starting fight
 - [x] better UI/UX
 - [x] Put attributed strategy for tanks
-- [ ] Put attributed strategy for healers
-- [ ] Put attributed strategy for MDPS
-- [ ] Put attributed strategy for RDPS
+- [x] Put attributed strategy for healers
+- [x] Put attributed strategy for MDPS
+- [x] Put attributed strategy for RDPS
 - [x] Display a widow at the start of the fight the show a text of where the player is expected to be according to attributed strategy
+- [x] add a way to close the window
+- [ ] Implement a death detection and change strat accordingly
 - [ ] Add a map that could track player position according to current situation or at least just pin point where/ what he should be doing
-- [ ] add a way to close the window
 
 
 Enjoy and happy gaming!
