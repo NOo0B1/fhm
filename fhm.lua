@@ -63,16 +63,6 @@ local marksTable = {
 ---------------
 -- FUNCTIONS --
 ---------------
--- Function to check if the input is a number
-local function isNumber(input)
-    return tonumber(input) ~= nil
-end
-
--- -- Function to trim spaces from the start and end of a string
--- local function trim(str)
---     if type(str) ~= "string" then return "" end
---     return str:match("^%s*(.-)%s*$")
--- end
 
 function fhmPrint(a)
     if a == nil then
@@ -81,12 +71,6 @@ function fhmPrint(a)
     end
     DEFAULT_CHAT_FRAME:AddMessage("|cff69ccf0[FHM] |cffffffff" .. a)
 end
-
-fhm:SetScript("OnEvent", function()
-    -- if event == 'ADDON_LOADED' then
-    --     fhmPrint("fhm is loaded successfully.")
-    -- end
-end)
 
 local function StartEncounter()
     if not isEncounterStarted then
@@ -101,6 +85,7 @@ local function OnCombatLogEvent(self, event, ...)
 
     -- Check if the event is a spell cast by one of the bosses
     if subEvent == "SPELL_CAST_START" and bossSpells[sourceName] == spellID then
+        fhmPrint("Encounter started, detect by spell cast")
         StartEncounter()
     end
 end
@@ -110,6 +95,7 @@ local function OnHealthEvent(self, event, unit)
     -- Only check units that match the boss names
     for _, bossName in ipairs(bossNames) do
         if UnitName(unit) == bossName and UnitHealth(unit) < UnitHealthMax(unit) * 0.99 then
+            fhmPrint("Encounter started, detect by boss hp")
             StartEncounter()
             break
         end
@@ -527,17 +513,6 @@ local framePairs = {
     { "Thane", imageFrameThane },
     { "Safespot", imageFrameSafe },
 }
-
-local function getBytes(s)
-    local bytes = {}
-
-
-
-    for i = 1, string.len(s) do
-        table.insert(bytes, string.byte(s, i))
-    end
-    return table.concat(bytes, " ")
-end
 
 local countFHM=0
 -- Function to print a log message for the 1-second timer
