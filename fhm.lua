@@ -74,24 +74,24 @@ end
 --     return str:match("^%s*(.-)%s*$")
 -- end
 
-function lrprint(a)
+function fhmPrint(a)
     if a == nil then
-        DEFAULT_CHAT_FRAME:AddMessage('|cff69ccf0[LR]|cff0070de:' .. time() .. '|cffffffff attempt to print a nil value.')
+        DEFAULT_CHAT_FRAME:AddMessage('|cff69ccf0[FHM]|cff0070de:' .. time() .. '|cffffffff attempt to print a nil value.')
         return false
     end
-    DEFAULT_CHAT_FRAME:AddMessage("|cff69ccf0[LR] |cffffffff" .. a)
+    DEFAULT_CHAT_FRAME:AddMessage("|cff69ccf0[FHM] |cffffffff" .. a)
 end
 
 fhm:SetScript("OnEvent", function()
     -- if event == 'ADDON_LOADED' then
-    --     lrprint("fhm is loaded successfully.")
+    --     fhmPrint("fhm is loaded successfully.")
     -- end
 end)
 
 local function StartEncounter()
     if not isEncounterStarted then
         isEncounterStarted = true
-        lrprint("The Four Horsemen encounter has started!")
+        fhmPrint("The Four Horsemen encounter has started!")
     end
 end
 
@@ -118,12 +118,12 @@ end
 
 -- Print usage of the addon
 function fhm:PrintHelp()
-    lrprint("This is the help message for the addon fhm from Cromsson.")
+    fhmPrint("This is the help message for the addon fhm from Cromsson.")
 
-    lrprint("Type /fhm help or /fhm h to display this function")
-    lrprint("Type /fhm disable to disable this addon.")
-    lrprint("Type /fhm enable to activate this addon.")
-    lrprint("Type /fhm config to configure this addon.")
+    fhmPrint("Type /fhm help or /fhm h to display this function")
+    fhmPrint("Type /fhm disable to disable this addon.")
+    fhmPrint("Type /fhm enable to activate this addon.")
+    fhmPrint("Type /fhm config to configure this addon.")
 end
 
 -- Initialize a table to store all custom frames and their initial positions
@@ -214,6 +214,7 @@ local function CreateCustomFrame(name, titleText, width, height)
     -- Toggle movability when the button is clicked
     toggleButtonStop:SetScript("OnClick", function()
         frame:Hide()
+        isDisabled=true
     end)
 
     -- Initialize button state
@@ -289,7 +290,7 @@ local function getMarkData(strat, role, attributedNumber, numberOfMarkTotal)
     end
 
     if  countProvider==0 then
-        lrprint("test3")
+        fhmPrint("test3")
         stopshit()
         return "No matching row found."
     end
@@ -369,7 +370,7 @@ for i, strat in ipairs(strats) do
     stratButtons[stratName]:SetScript("OnClick", function()
         -- Update the selectedStratFHM variable
         selectedStratFHM = stratName
-        lrprint("Strat selected: " .. selectedStratFHM)
+        fhmPrint("Strat selected: " .. selectedStratFHM)
 
         -- Hide the strat frame and show the number input frame
         stratFrame:Hide()
@@ -400,7 +401,7 @@ for i, role in ipairs(roles) do
     roleButtons[roleName]:SetScript("OnClick", function()
         -- Update the selectedRoleFHM variable
         selectedRoleFHM = roleName
-        lrprint("Role selected: " .. selectedRoleFHM)
+        fhmPrint("Role selected: " .. selectedRoleFHM)
 
         -- Update the title of the number input frame to reflect the selected role
         numberInputTitle:SetText("Enter a number for " .. selectedRoleFHM)
@@ -477,7 +478,7 @@ SlashCmdList["FHM"] = function(cmd)
         elseif cmd == 'reset' then
             markNum=0
             ResetFramesToInitialPosition()
-            lrprint("Frames reset to their initial positions.")
+            fhmPrint("Frames reset to their initial positions.")
             isEncounterStarted=false;
             stratFrame:Hide()
             roleFrame:Hide()
@@ -491,13 +492,13 @@ SlashCmdList["FHM"] = function(cmd)
         elseif cmd == 'close' then
             stopshit()
         elseif cmd == 'test' then
-            lrprint("selectedRoleFHM : " .. selectedRoleFHM ..",selectedStratFHM : " .. selectedStratFHM ..",numberFHM : " .. numberFHM )
+            fhmPrint("selectedRoleFHM : " .. selectedRoleFHM ..",selectedStratFHM : " .. selectedStratFHM ..",numberFHM : " .. numberFHM )
             isDisabled=false
             StartEncounter()
         elseif cmd == 'config' or cmd == '' then
             stratFrame:Show()
         else
-            lrprint("Unknown command : " .. cmd)
+            fhmPrint("Unknown command : " .. cmd)
             fhm:PrintHelp()
         end
     else
@@ -541,9 +542,9 @@ end
 local countFHM=0
 -- Function to print a log message for the 1-second timer
 local function printLog1Sec()
- --lrprint("countFHM : " .. countFHM)
---  lrprint("printLog1Sec isEncounterStarted : " .. tostring(isEncounterStarted))
---  lrprint("print1sec : " .. selectedStratFHM .. " , ".. selectedRoleFHM.. " , "..numberFHM.. " , "..markNum)
+ --fhmPrint("countFHM : " .. countFHM)
+--  fhmPrint("printLog1Sec isEncounterStarted : " .. tostring(isEncounterStarted))
+--  fhmPrint("print1sec : " .. selectedStratFHM .. " , ".. selectedRoleFHM.. " , "..numberFHM.. " , "..markNum)
     if currentSpotTobeFHM=="" then
         currentSpotTobeFHM=getMarkData(selectedStratFHM, selectedRoleFHM,numberFHM,markNum)
     end
@@ -551,7 +552,7 @@ local function printLog1Sec()
    -- DEFAULT_CHAT_FRAME:AddMessage("currentSpotTobeFHM = " .. currentSpotTobeFHM)
     for _, row in ipairs(framePairs) do        
         if row[1] == currentSpotTobeFHM then
-            --lrprint("row 1: " .. row[1] .. "   row2: " .. row[2]:GetName())
+            --fhmPrint("row 1: " .. row[1] .. "   row2: " .. row[2]:GetName())
             imageFrameInit:Hide()
             imageFrameBlaumeux:Hide()
             imageFrameSafe:Hide()
@@ -574,12 +575,12 @@ end
 -- Function to print a log message for the 15-second timer
 local function printLog15Sec()
     markNum=markNum+1
-    -- lrprint("printLog15Sec isEncounterStarted : " .. tostring(isEncounterStarted))
+    -- fhmPrint("printLog15Sec isEncounterStarted : " .. tostring(isEncounterStarted))
 
     currentSpotTobeFHM=getMarkData(selectedStratFHM, selectedRoleFHM,numberFHM,markNum)
     --DEFAULT_CHAT_FRAME:AddMessage("Log printed every 15 seconds! markNum= " .. markNum .. " and currentSpotTobeFHM = " .. currentSpotTobeFHM)
-    --lrprint("print15sec : " .. selectedStratFHM .. " , ".. selectedRoleFHM.. " , "..numberFHM.. " , "..markNum)
-    --lrprint("currentSpotTobeFHM: "..getMarkData(selectedStratFHM, selectedRoleFHM,numberFHM,markNum))
+    --fhmPrint("print15sec : " .. selectedStratFHM .. " , ".. selectedRoleFHM.. " , "..numberFHM.. " , "..markNum)
+    --fhmPrint("currentSpotTobeFHM: "..getMarkData(selectedStratFHM, selectedRoleFHM,numberFHM,markNum))
 
 end
 
@@ -593,10 +594,10 @@ fhm:SetScript("OnUpdate", function(self)
     --     numberFHM=0
     -- end
     -- if countfhm==0 then
-    --     lrprint("countfhm 0 isEncounterStarted : " .. tostring(isEncounterStarted))
+    --     fhmPrint("countfhm 0 isEncounterStarted : " .. tostring(isEncounterStarted))
     -- end
     -- if countfhm==1 then
-    --     lrprint("countfhm 1 isEncounterStarted : " .. tostring(isEncounterStarted))
+    --     fhmPrint("countfhm 1 isEncounterStarted : " .. tostring(isEncounterStarted))
     --     countfhm=countfhm+1
     -- end
     if isEncounterStarted and not isDisabled then

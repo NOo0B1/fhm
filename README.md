@@ -86,7 +86,8 @@ This project is licensed under the MIT License. See the LICENSE file for more de
 - [x] Put attributed strategy for MDPS
 - [x] Put attributed strategy for RDPS
 - [x] Display a widow at the start of the fight the show a text of where the player is expected to be according to attributed strategy
-- [x] add a way to close the window
+- [x] Add a way to close the window
+- [ ] Start mark 1 when mark 1 is detected and then start the count for 15 sec (but keep the 0.5 ongoing separatly)
 - [ ] Implement a death detection and change strat accordingly
 - [ ] Add a map that could track player position according to current situation or at least just pin point where/ what he should be doing
 
