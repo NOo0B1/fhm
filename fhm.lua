@@ -36,7 +36,8 @@ local spotTable ={"Safespot","Thane","Mograine","Zeliek","Blaumeux"}
 
 -- Define the 2D array with additional columns "6 TANKS" and "TANK" at the start of each row
 local marksTable = {
-    { "6 Tanks", "Tank", 1, "Thane", "Thane", "Safespot", "Zeliek", "Zeliek", "Blaumeux", "Blaumeux", "Blaumeux", "Safespot", "Safespot", "Mograine", "Mograine" }    { "6 Tanks", "Tank", 2, "Mograine", "Zeliek", "Zeliek", "Zeliek", "Blaumeux", "Blaumeux", "Blaumeux", "Safespot", "Safespot", "Safespot", "Mograine", "Mograine", "Mograine" },
+    { "6 Tanks", "Tank", 1, "Thane", "Thane", "Safespot", "Zeliek", "Zeliek", "Blaumeux", "Blaumeux", "Blaumeux", "Safespot", "Safespot", "Mograine", "Mograine" },
+    { "6 Tanks", "Tank", 2, "Mograine", "Zeliek", "Zeliek", "Zeliek", "Blaumeux", "Blaumeux", "Blaumeux", "Safespot", "Safespot", "Safespot", "Mograine", "Mograine", "Mograine" },
     { "6 Tanks", "Tank", 3, "Zeliek", "Zeliek", "Blaumeux", "Blaumeux", "Blaumeux", "Safespot", "Safespot", "Safespot", "Mograine", "Mograine", "Mograine", "Zeliek", "Zeliek" },
     { "6 Tanks", "Tank", 4, "Blaumeux", "Mograine", "Mograine", "Mograine", "Zeliek", "Zeliek", "Zeliek", "Blaumeux", "Blaumeux", "Blaumeux", "Safespot", "Safespot", "Safespot" },
     { "6 Tanks", "Tank", 5, "Safespot", "Mograine", "Mograine", "Zeliek", "Zeliek", "Zeliek", "Blaumeux", "Blaumeux", "Blaumeux", "Safespot", "Safespot", "Safespot", "Mograine" },
@@ -44,17 +45,17 @@ local marksTable = {
     { "6 Tanks", "Melee DPS", 6, "Thane", "Thane", "Thane", "Thane", "Thane", "Safespot", "Mograine", "Mograine", "Mograine", "Safespot" },
     { "6 Tanks", "Ranged DPS", 6, "Thane", "Thane", "Thane", "Thane", "Thane", "Safespot", "Mograine", "Mograine", "Mograine", "Safespot" },
     {"6 Tanks","Healer",1,"Thane","Thane","Thane" ,"Mograine","Mograine","Mograine","Zeliek","Zeliek","Zeliek"},
-    {"6 Tanks","Healer",1,"Blameux","Thane" ,"Thane" ,"Thane" ,"Mograine","Mograine","Mograine","Zeliek","Zeliek"},
-    {"6 Tanks","Healer",1,"Blameux","Blameux","Thane" ,"Thane" ,"Thane" ,"Mograine","Mograine","Mograine","Zeliek"},
-    {"6 Tanks","Healer",1,"Mograine","Mograine","Mograine","Zeliek","Zeliek","Zeliek","Blameux","Blameux","Blameux"},
-    {"6 Tanks","Healer",1,"Thane" ,"Mograine","Mograine","Mograine","Zeliek","Zeliek","Zeliek","Blameux","Blameux"},
-    {"6 Tanks","Healer",1,"Thane" ,"Thane" ,"Mograine","Mograine","Mograine","Zeliek","Zeliek","Zeliek","Blameux"},
-    {"6 Tanks","Healer",1,"Zeliek","Zeliek","Zeliek","Blameux","Blameux","Blameux","Thane" ,"Thane" ,"Thane"},
-    {"6 Tanks","Healer",1,"Mograine","Zeliek","Zeliek","Zeliek","Blameux","Blameux","Blameux","Thane" ,"Thane"},
-    {"6 Tanks","Healer",1,"Mograine","Mograine","Zeliek","Zeliek","Zeliek","Blameux","Blameux","Blameux","Thane"},
-    {"6 Tanks","Healer",1,"Blameux","Blameux","Blameux","Thane" ,"Thane" ,"Thane" ,"Mograine","Mograine","Mograine"},
-    {"6 Tanks","Healer",1,"Zeliek","Blameux","Blameux","Blameux","Thane" ,"Thane" ,"Thane" ,"Mograine","Mograine"},
-    {"6 Tanks","Healer",1,"Zeliek","Zeliek","Blameux","Blameux","Blameux","Thane" ,"Thane","Thane","Mograine"},
+    {"6 Tanks","Healer",2,"Blameux","Thane" ,"Thane" ,"Thane" ,"Mograine","Mograine","Mograine","Zeliek","Zeliek"},
+    {"6 Tanks","Healer",3,"Blameux","Blameux","Thane" ,"Thane" ,"Thane" ,"Mograine","Mograine","Mograine","Zeliek"},
+    {"6 Tanks","Healer",4,"Mograine","Mograine","Mograine","Zeliek","Zeliek","Zeliek","Blameux","Blameux","Blameux"},
+    {"6 Tanks","Healer",5,"Thane" ,"Mograine","Mograine","Mograine","Zeliek","Zeliek","Zeliek","Blameux","Blameux"},
+    {"6 Tanks","Healer",6,"Thane" ,"Thane" ,"Mograine","Mograine","Mograine","Zeliek","Zeliek","Zeliek","Blameux"},
+    {"6 Tanks","Healer",7,"Zeliek","Zeliek","Zeliek","Blameux","Blameux","Blameux","Thane" ,"Thane" ,"Thane"},
+    {"6 Tanks","Healer",8,"Mograine","Zeliek","Zeliek","Zeliek","Blameux","Blameux","Blameux","Thane" ,"Thane"},
+    {"6 Tanks","Healer",9,"Mograine","Mograine","Zeliek","Zeliek","Zeliek","Blameux","Blameux","Blameux","Thane"},
+    {"6 Tanks","Healer",10,"Blameux","Blameux","Blameux","Thane" ,"Thane" ,"Thane" ,"Mograine","Mograine","Mograine"},
+    {"6 Tanks","Healer",11,"Zeliek","Blameux","Blameux","Blameux","Thane" ,"Thane" ,"Thane" ,"Mograine","Mograine"},
+    {"6 Tanks","Healer",12,"Zeliek","Zeliek","Blameux","Blameux","Blameux","Thane" ,"Thane","Thane","Mograine"},
 
 }
 
